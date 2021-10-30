@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadSafeLoop", "ThreadSafeLoop\ThreadSafeLoop.csproj", "{8E53F6A7-E4B3-4ED6-91A6-04D7423DC17A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E53F6A7-E4B3-4ED6-91A6-04D7423DC17A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E53F6A7-E4B3-4ED6-91A6-04D7423DC17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E53F6A7-E4B3-4ED6-91A6-04D7423DC17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E53F6A7-E4B3-4ED6-91A6-04D7423DC17A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
