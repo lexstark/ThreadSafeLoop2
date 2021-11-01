@@ -13,14 +13,12 @@ namespace ThreadSafeLoop
         {
             Console.WriteLine("Looper!");
 
-            var z = 0;
-            var zz = Interlocked.CompareExchange(ref z, 1, 0);
-            var maxTotal = 1_000_000;
+            var maxTotal = 100000;
 
-            // naive
-            Console.WriteLine("Naive");
-            for (int i = 100; i < maxTotal; i*=10)
-            {
+             // naive
+             Console.WriteLine("Naive");
+             for (int i = 100; i < maxTotal; i*=10)
+             {
                 await Test(i, x=>x.GetNextNaive());
             }
             
@@ -29,6 +27,13 @@ namespace ThreadSafeLoop
             for (int i = 100; i < maxTotal; i*=10)
             {
                 await Test(i, x=>x.GetNext());
+            }
+            
+            // ideal
+            Console.WriteLine("Ideal");
+            for (int i = 100; i < maxTotal; i*=10)
+            {
+                await Test(i, x=>x.GetNextIdeal());
             }
             
             //Console.ReadKey();
@@ -57,7 +62,7 @@ namespace ThreadSafeLoop
             await Task.WhenAll(tasks);
 
             sw.Stop();
-            Console.WriteLine($"[{sw.Elapsed}] Total was {total} and zeros={zero}({((decimal)zero / total):P1}) and ones={one}({((decimal)one / total):P1}) MISTAKES {mistake}");
+            Console.WriteLine($"[{sw.Elapsed}] Total={total} Zeros={zero}({((decimal)zero / total):P1}) Ones={one}({((decimal)one / total):P1}) MISTAKES {mistake}");
         }
     }
 
@@ -90,5 +95,43 @@ namespace ThreadSafeLoop
             return _current++;
         }
         
+        private readonly int[] _pool = new int[] {0, 1};
+        
+        public int GetNextIdeal()
+        {
+            var i = Interlocked.Increment(ref _current);
+            i %= _pool.Length;
+            return _pool[Math.Abs(i)];
+        }
+    }
+    
+    public class Looper2
+    {
+        private int _max = Int32.MaxValue - 100000;
+        private int _current = -1;
+        private readonly int[] _pool = new int[] {0, 1};
+        
+        public Looper2()
+        {
+        }
+
+        public int GetNext()
+        {
+            var i = Interlocked.Increment(ref _current);
+            if (_current >= _max)
+            {
+                _current = 0;
+            }
+            
+            i %= _pool.Length;
+            return _pool[Math.Abs(i)];
+        }
+
+        public int GetNextNaive()
+        {
+            if (_current >= _max)
+                _current = 0;
+            return _current++;
+        }
     }
 }
